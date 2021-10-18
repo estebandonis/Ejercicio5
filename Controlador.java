@@ -27,6 +27,7 @@ public class Controlador {
                 String rol = vis.crearJugadores();
                 sistem.crearJugador(rol);
             }
+            sistem.crearRaidBoss();
             sistem.crearEnemigos();
             vis.iniciar(sistem.getCombatientes());
         
@@ -78,6 +79,9 @@ public class Controlador {
                         }
                         else if (turno.equalsIgnoreCase("enemigos")){
                             String jugadorAAfectar = vis.jugadorDondeSeVaAUsarHabilidad(sistem.getCombatientes());
+                            if (turnoEnemigo == 1){
+                                sistem.usarHabilidadRaidBoss(jugadorAAfectar, turnoEnemigo, vis.habilidadAUsar());
+                            }
                             sistem.usarHabilidadEnemigo(jugadorAAfectar, turnoEnemigo);
                             String[] datos = sistem.administradorTurnos(turno, turnoJugador, turnoEnemigo);
                             turnoJugador = Integer.parseInt(datos[0]);

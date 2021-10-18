@@ -68,15 +68,19 @@ public class Sistema {
         combatientes.add(newJefe);
     }
 
+    /**
+     * Crea al Raid Boss
+     */
     public void crearRaidBoss(){
-        
+        numEnemigos += 1;
+        RaidBoss boss = new RaidBoss("Enemigo"+numEnemigos);
+        combatientes.add(boss);
     }
     
     /**
-     * Nos sirve para atacar a los enemigos
+     * Ejecuta a que enemigo atacar
      * @param enemigoAAtacar
-     * @param turno
-     * @return
+     * @param numJugador
      */
     public void atacarEnemigo(String enemigoAAtacar, int numJugador){
         for(int i = 0; i< combatientes.size(); i++){
@@ -87,11 +91,20 @@ public class Sistema {
                 combatientes.set(i, enemy);
                 if (enemy.getPuntosVida() <= 0){
                     combatientes.remove(i);
+                    numEnemigos -= 1;
+                    if (enemy.getNombre().equalsIgnoreCase("enemigo1")){
+                        perdedor = "enemigos";
+                    }
                 }
             }
         }
     }
 
+    /**
+     * Ejecuta a que jugador atacar
+     * @param jugadorAAtacar
+     * @param numEnemigo
+     */
     public void atacarJugador(String jugadorAAtacar, int numEnemigo){
         for(int i = 0; i< combatientes.size(); i++){
             Combatiente player = combatientes.get(i);
@@ -101,11 +114,52 @@ public class Sistema {
                 combatientes.set(i, player);
                 if (player.getPuntosVida() <= 0){
                     combatientes.remove(i);
+                    numJugadores -= 1;
                 }
             }
         }
+        if(numJugadores == 0){
+            perdedor = "jugadores";
+        }
     }
 
+    /**
+     * Determina el usar las habilidades del Raid Boss
+     * @param jugadorAAtacar
+     * @param numEnemigo
+     * @param numHabilidad
+     */
+    public void usarHabilidadRaidBoss(String jugadorAAtacar, int numEnemigo, int numHabilidad){
+        for(int i = 0; i< combatientes.size(); i++){
+            Combatiente player = combatientes.get(i);
+            if (jugadorAAtacar.equalsIgnoreCase(player.getNombre())){
+                RaidBoss boss = (RaidBoss) obtenerEnemigo(numEnemigo);
+                if (numHabilidad == 1){
+                    player = boss.habilidadEspecial(player);
+                }
+                else if (numHabilidad == 2){
+                    player = boss.habilidadEspecial2(player);
+                }
+                else if (numHabilidad == 3){
+                    player = boss.habilidadEspecial3(player);
+                }
+                combatientes.set(i, player);
+                if (player.getPuntosVida() <= 0){
+                    combatientes.remove(i);
+                    numJugadores -= 1;
+                }
+            }
+        }
+        if(numJugadores == 0){
+            perdedor = "jugadores";
+        }
+    }
+
+    /**
+     * Determina el usar las habilidades de los enemigos
+     * @param jugadorAAtacar
+     * @param numEnemigo
+     */
     public void usarHabilidadEnemigo(String jugadorAAtacar, int numEnemigo){
         for(int i = 0; i< combatientes.size(); i++){
             Combatiente player = combatientes.get(i);
@@ -115,11 +169,19 @@ public class Sistema {
                 combatientes.set(i, player);
                 if (player.getPuntosVida() <= 0){
                     combatientes.remove(i);
+                    numJugadores -= 1;
                 }
             }
         }
+        if(numJugadores == 0){
+            perdedor = "jugadores";
+        }
     }
 
+    /**
+     * Determina el usar las habilidades de los jugadores
+     * @param numJugador
+     */
     public void usarHabilidadJugador(int numJugador){
         Jugador player = (Jugador) obtenerJugador(numJugador);
         Combatiente combatiente = new Enemigo("default");
@@ -150,6 +212,11 @@ public class Sistema {
         return perdedor;
     }
 
+    /**
+     * Obtenemos el jugador que necesitamos
+     * @param numJugador
+     * @return
+     */
     public Combatiente obtenerJugador(int numJugador){
         Combatiente combatiente = new Guerrero("default");
         for (int a = 0; a < combatientes.size(); a++){
@@ -161,6 +228,11 @@ public class Sistema {
         return combatiente;
     }
 
+    /**
+     * Obtenemos al enemigo que necesitamos
+     * @param numEnemigo
+     * @return
+     */
     public Combatiente obtenerEnemigo(int numEnemigo){
         Combatiente combatiente = new Enemigo("default");
         for (int a = 0; a < combatientes.size(); a++){
@@ -172,6 +244,13 @@ public class Sistema {
         return combatiente;
     }
 
+    /**
+     * Administra los turnos
+     * @param turno
+     * @param turnoJugador
+     * @param turnoEnemigo
+     * @return
+     */
     public String[] administradorTurnos(String turno, int turnoJugador, int turnoEnemigo){
         String[] data = new String[3];
         System.out.println(numJugadores);
@@ -247,13 +326,13 @@ public class Sistema {
                 for (int i = 0; i < combatientes.size(); i++){
                     Combatiente combate = combatientes.get(i);
                     String nombre = combate.getNombre();
-                    if (nombre.equalsIgnoreCase("enemigo1") || nombre.equalsIgnoreCase("enemigo2") || nombre.equalsIgnoreCase("enemigo3")){
+                    if (nombre.equalsIgnoreCase("enemigo1") || nombre.equalsIgnoreCase("enemigo2") || nombre.equalsIgnoreCase("enemigo3") || nombre.equalsIgnoreCase("enemigo4") || nombre.equalsIgnoreCase("enemigo5")){
                         String ultimo = nombre.substring(nombre.length() - 1);
                         int num = Integer.parseInt(ultimo);
                         if (num == turnoEnemigo){
                             if (numEnemigos == 2){
                                 if (nombre.equalsIgnoreCase("enemigo2")){
-                                    turnoJugador = 1;
+                                    turnoEnemigo = 1;
                                     turno = "jugadores";
                                     data[0] = Integer.toString(turnoJugador);
                                     data[1] = Integer.toString(turnoEnemigo);
@@ -261,7 +340,7 @@ public class Sistema {
                                     return data;   
                                 }
                                 else {
-                                    turnoJugador += 1;
+                                    turnoEnemigo += 1;
                                     turno = "jugadores";
                                     data[0] = Integer.toString(turnoJugador);
                                     data[1] = Integer.toString(turnoEnemigo);
@@ -271,6 +350,42 @@ public class Sistema {
                             }
                             else if (numEnemigos == 3){
                                 if (nombre.equalsIgnoreCase("enemigo3")){
+                                    turnoEnemigo = 1;
+                                    turno = "jugadores";
+                                    data[0] = Integer.toString(turnoJugador);
+                                    data[1] = Integer.toString(turnoEnemigo);
+                                    data[2] = turno;
+                                    return data;   
+                                }
+                                else {
+                                    turnoEnemigo += 1;
+                                    turno = "jugadores";
+                                    data[0] = Integer.toString(turnoJugador);
+                                    data[1] = Integer.toString(turnoEnemigo);
+                                    data[2] = turno;
+                                    return data;   
+                                }
+                            }
+                            else if (numEnemigos == 4){
+                                if (nombre.equalsIgnoreCase("enemigo4")){
+                                    turnoEnemigo = 1;
+                                    turno = "jugadores";
+                                    data[0] = Integer.toString(turnoJugador);
+                                    data[1] = Integer.toString(turnoEnemigo);
+                                    data[2] = turno;
+                                    return data;   
+                                }
+                                else {
+                                    turnoEnemigo += 1;
+                                    turno = "jugadores";
+                                    data[0] = Integer.toString(turnoJugador);
+                                    data[1] = Integer.toString(turnoEnemigo);
+                                    data[2] = turno;
+                                    return data;   
+                                }
+                            }
+                            else if (numEnemigos == 5){
+                                if (nombre.equalsIgnoreCase("enemigo5")){
                                     turnoEnemigo = 1;
                                     turno = "jugadores";
                                     data[0] = Integer.toString(turnoJugador);

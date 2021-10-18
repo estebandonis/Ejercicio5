@@ -25,5 +25,10 @@ public abstract class Items {
         this.cantidad = cantidad;
     }
 
+    /**
+     * Define el ejecto del item
+     * @param player
+     * @return
+     */
     public abstract Jugador usar(Jugador player);
 }

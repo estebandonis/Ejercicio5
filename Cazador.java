@@ -1,3 +1,7 @@
+/**
+ * Nos ayuda a crear la clase cazador
+ */
+
 public class Cazador extends Jugador{
     Company Acompany = new Company("Jeffrey", this);
     Cazador(String nombre){
@@ -8,6 +12,9 @@ public class Cazador extends Jugador{
         setItem(curar);
     }
 
+    /**
+     * Ejecuta la habilidad especial de cazador
+     */
     @Override
     public Combatiente habilidadEspecial(Combatiente combatiente) {
         Items item = getItem();
@@ -18,9 +25,12 @@ public class Cazador extends Jugador{
         return combatiente;
     }
 
+    /**
+     * Escribe un mensaje de inicio
+     */
     @Override
     public String toString() {
-        System.out.println("No podran vencernos a mi y a mi compañero!");
+        System.out.println("No podran vencernos a mi compañero y a mi!");
         return null;
     }
 }

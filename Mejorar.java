@@ -1,8 +1,15 @@
+/**
+ * Nos sirve para crear items de mejorar
+ */
+
 public class Mejorar extends Items{
     Mejorar(int cantidad){
         super(cantidad);
     }
 
+    /**
+     * Define el efecto que va a tener el item
+     */
     @Override
     public Jugador usar(Jugador player) {
         int fuerza = player.getPoderAtaque();

@@ -21,9 +21,10 @@ public class Vista {
     }
 
     /**
-     * Sirve para desplegar el menu de inicio
+     * Despliega el menu
      * @param turno
-     * @return numero de opcion que eligio el usuario
+     * @param num
+     * @return
      */
     public int menu(String turno, int num){
         System.out.println("Turno de " + turno + ", con el numero: "+ num);
@@ -46,6 +47,10 @@ public class Vista {
         return option;//regresamos el valor convertido
     }
 
+    /**
+     * Le pide la informacion al usuario para crear los jugadores
+     * @return
+     */
     public String crearJugadores(){
         String role = "";
         boolean right = false;
@@ -60,8 +65,8 @@ public class Vista {
     }
 
     /**
-     * metodo que sirve para verificar que enemigo se va a atacar
-     * @param enemigos
+     * Le pregunta al jugador a que enemigo va a atacar
+     * @param combatientes
      * @return
      */
     public String enemigoAAtacar(ArrayList<Combatiente> combatientes){
@@ -84,6 +89,11 @@ public class Vista {
         return enemigoAAtacar;
     }
 
+    /**
+     * Le pregunta al enemigo a que jugador va a atacar
+     * @param combatientes
+     * @return
+     */
     public String jugadorAAtacar(ArrayList<Combatiente> combatientes){
         String jugadorAAtacar = "";
         boolean paso = false;
@@ -104,6 +114,11 @@ public class Vista {
         return jugadorAAtacar;
     }
 
+    /**
+     * Le pregunta al enemigo el jugador donde se va a usar la habilidad especial
+     * @param combatientes
+     * @return
+     */
     public String jugadorDondeSeVaAUsarHabilidad(ArrayList<Combatiente> combatientes){
         String jugadorAfectado = "";
         boolean paso = false;
@@ -125,14 +140,22 @@ public class Vista {
     }
 
     /**
-     * Despliega las estadisticas del combate
-     * @param enemigos
-     * @param player
+     * Despliega las estadisticas de los combatientes
+     * @param combatientes
      */
     public void desplegarEstadisticas(ArrayList<Combatiente> combatientes){
         for (int i = 0; i < combatientes.size(); i++){
             Combatiente combatiente = combatientes.get(i);
-            if (combatiente.getNombre().equalsIgnoreCase("enemigo1") || combatiente.getNombre().equalsIgnoreCase("enemigo2") || combatiente.getNombre().equalsIgnoreCase("enemigo3") || combatiente.getNombre().equalsIgnoreCase("enemigo4") || combatiente.getNombre().equalsIgnoreCase("enemigo5")){
+            if (combatiente.getNombre().equalsIgnoreCase("enemigo1")){
+                RaidBoss boss = (RaidBoss) combatiente;
+                System.out.println("---------------------------------");
+                System.out.println("Nombre del enemigo: " + boss.getNombre());
+                System.out.println("Nombre: "+ boss.getName());
+                System.out.println("Vida: " + boss.getPuntosVida());
+                System.out.println("Poder: " + boss.getPoderAtaque());//Vamos extrayendo los datos de la base de datos y los vamos imprimiendo conforme los vamos extrayendo
+                System.out.println("---------------------------------");
+            }
+            else if (combatiente.getNombre().equalsIgnoreCase("enemigo2") || combatiente.getNombre().equalsIgnoreCase("enemigo3") || combatiente.getNombre().equalsIgnoreCase("enemigo4") || combatiente.getNombre().equalsIgnoreCase("enemigo5")){
                 Enemigo enemy = (Enemigo) combatiente;
                 System.out.println("---------------------------------");
                 System.out.println("Nombre del enemigo: " + enemy.getNombre());
@@ -153,9 +176,32 @@ public class Vista {
     }
 
     /**
-     * Despliega los mensajes de inicio
-     * @param enemigos
-     * @param player
+     * Determinar que habilidad se va a usar
+     * @return
+     */
+    public int habilidadAUsar(){
+        System.out.println("Que numero de habilidad desea usar?");
+        System.out.println("1. Rayo");
+        System.out.println("2. Fuego");
+        System.out.println("3. Hielo");
+        boolean paso = false;
+        int option = 1;
+        while (paso == false){
+            String optionString = scan.nextLine();
+            if (optionString.equalsIgnoreCase("1") || optionString.equalsIgnoreCase("2") || optionString.equalsIgnoreCase("3")){
+                option = Integer.parseInt(optionString);
+                return option;
+            }
+            else{
+                System.out.println("Ingrese un valor correcto");
+            }
+        }
+        return option;//regresamos el valor convertido
+    }
+
+    /**
+     * Despliega los mensajes de los combatientes
+     * @param combatientes
      */
     public void iniciar(ArrayList<Combatiente> combatientes){
         for (int i = 0; i < combatientes.size(); i++){

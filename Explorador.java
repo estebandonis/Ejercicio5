@@ -1,3 +1,7 @@
+/**
+ * Nos ayuda a crear un rol explorador
+ */
+
 public class Explorador extends Jugador{
     Explorador(String nombre){
         super(nombre);
@@ -7,6 +11,9 @@ public class Explorador extends Jugador{
         setItem(curar);
     }
 
+    /**
+     * Ejecuta la habilidad especial
+     */
     @Override
     public Combatiente habilidadEspecial(Combatiente combatiente) {
         Items item = getItem();
@@ -16,6 +23,9 @@ public class Explorador extends Jugador{
         return combatiente;
     }
 
+    /**
+     * Ejecuta el mensaje de inicio
+     */
     @Override
     public String toString() {
         System.out.println("No nos pueden vencer!");

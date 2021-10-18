@@ -3,6 +3,9 @@ public class Curar extends Items{
         super(cantidad);
     }
 
+    /**
+     * Ejecuta el efecto del item
+     */
     @Override
     public Jugador usar(Jugador player) {
         int vida = player.getPuntosVida();

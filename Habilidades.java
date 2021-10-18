@@ -9,10 +9,18 @@ public abstract class Habilidades {
         damage = cantidad;
     }
 
+    /**
+     * Obtenemos el daño que que causa
+     * @return
+     */
     public int getdamage() {
         return damage;
     }
 
+    /**
+     * Se define el daño
+     * @param damage
+     */
     public void setdamage(int damage) {
         this.damage = damage;
     }

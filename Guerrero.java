@@ -1,3 +1,7 @@
+/**
+ * Nos ayuda a crear un Guerrero
+ */
+
 public class Guerrero extends Jugador{
     Guerrero(String nombre){
         super(nombre);
@@ -7,6 +11,9 @@ public class Guerrero extends Jugador{
         setItem(mejora);
     }
 
+    /**
+     * Utiliza la habilidad especial que es utilizar un item
+     */
     @Override
     public Combatiente habilidadEspecial(Combatiente combatiente) {
         Items item = getItem();
@@ -16,6 +23,9 @@ public class Guerrero extends Jugador{
         return combatiente;
     }
 
+    /**
+     * Despliega un mensaje
+     */
     @Override
     public String toString() {
         System.out.println("Vamos al ataque!");

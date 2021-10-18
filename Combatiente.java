@@ -2,18 +2,13 @@
  * es la clase base de la que se derivan las clases jugador y enemigo
  */
 
-import java.util.Random;
-
-public class Combatiente {
+public abstract class Combatiente {
     private String nombre;
     private int PuntosVida;
     private int PoderAtaque;
-    private Random randomint = new Random();
 
     Combatiente(String nombre){
         this.nombre = nombre;
-        this.PuntosVida = randomint.nextInt((150 - 100) + 1) + 100;
-        this.PoderAtaque = randomint.nextInt((30 - 20) + 1) + 20;
     }
 
     /**
@@ -59,7 +54,10 @@ public class Combatiente {
     /**
      * Lo dejamos para usarlo en las clases hijas
      */
-    public void habilidadEspecial(){
-        
-    }
+    public abstract Combatiente habilidadEspecial(Combatiente combatiente);
+
+    /**
+     * Lo usamos para desplegar un mensaje
+     */
+    public abstract String toString();
 }

@@ -3,20 +3,20 @@
  */
 
 public class Jefe extends Enemigo {
-    Jefe (String nombre, int tipo){
-        super(nombre, tipo);
-        super.setPoderAtaque(super.getPoderAtaque()*2);
-        super.setPuntosVida(super.getPuntosVida()*2);
+    private Habilidades habilidad2;
+    Jefe (String nombre){
+        super(nombre);
+        setPoderAtaque(super.getPoderAtaque()*2);
+        setPuntosVida(super.getPuntosVida()*2);
+        habilidad2 = new Fuego(60);
     }
 
     /**
      * Lo utilizamos para usar la segunda habilidad especial
      */
-    public void habilidadEspecial2(){
-        Habilidades habilidad = getHabilidad();
-        Enemigo enemy = habilidad.usar(this);
-        this.setPoderAtaque(enemy.getPoderAtaque());
-        this.setPuntosVida(enemy.getPuntosVida());
+    public Combatiente habilidadEspecial2(Combatiente combatiente){
+        combatiente = habilidad2.usar(this);
+        return combatiente;
     }
 
     /**

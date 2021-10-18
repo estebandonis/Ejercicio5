@@ -1,22 +1,20 @@
 /**
  * Sirve para crear habilidades
  */
-import java.util.Random;
 
-public class Habilidades {
-    private String tipo;
-    Random randomint = new Random();
+public abstract class Habilidades {
+    int damage;
 
-    Habilidades(String tipo){
-        this.tipo = tipo;
+    Habilidades(int cantidad){
+        damage = cantidad;
     }
 
-    /**
-     * Nos regresa el valor de tipo
-     * @return
-     */
-    public String getTipo() {
-        return tipo;
+    public int getdamage() {
+        return damage;
+    }
+
+    public void setdamage(int damage) {
+        this.damage = damage;
     }
 
     /**
@@ -24,38 +22,5 @@ public class Habilidades {
      * @param enemy
      * @return
      */
-    public Enemigo usar(Enemigo enemy){
-        int random = randomint.nextInt((2-1)+1)+1;
-        if (random == 1){
-            enemy = curar(enemy);
-        }
-        else{
-            enemy = mejorar(enemy);
-        }
-        return enemy;
-    }
-
-    /**
-     * Definimos que va a hacer la habilidad de curar
-     * @param enemy
-     * @return
-     */
-    private Enemigo curar(Enemigo enemy){
-        int vida = enemy.getPuntosVida();
-        vida += 100;
-        enemy.setPuntosVida(vida);
-        return enemy; 
-    }
-
-    /**
-     * Definimos que va a hacer la habilidad de mejorar
-     * @param enemy
-     * @return
-     */
-    private Enemigo mejorar(Enemigo enemy){
-        int fuerza = enemy.getPoderAtaque();
-        fuerza += 30;
-        enemy.setPoderAtaque(fuerza);
-        return enemy;
-    }
+    public abstract Combatiente usar(Combatiente combatiente);
 }

@@ -18,13 +18,17 @@ public class Controlador {
         Sistema sistem = new Sistema();
         Vista vis = new Vista();
         int opcion = 0;
-        String turno = "jugador";
+        String turno = "jugadores";
+        int turnoJugador = 1;
+        int turnoEnemigo = 1;
 
-        try {
-            String[] datos = vis.inicio();
-            sistem.crearJugador(datos);
+            int cantidad = vis.inicio();
+            for (int i = 0; i < cantidad; i++){
+                String rol = vis.crearJugadores();
+                sistem.crearJugador(rol);
+            }
             sistem.crearEnemigos();
-            vis.iniciar(sistem.getEnemigos(), sistem.getJugador());
+            vis.iniciar(sistem.getCombatientes());
         
             while (opcion != 7){
                 if (sistem.getPerdedor() != null){
@@ -33,21 +37,53 @@ public class Controlador {
                     System.exit(0);//Se sale del programa
                 }
                 else {
-                    vis.desplegarEstadisticas(sistem.getEnemigos(), sistem.getJugador());
-                    opcion = vis.menu(turno);
+                    vis.desplegarEstadisticas(sistem.getCombatientes());
+                    if (turno.equalsIgnoreCase("jugadores")){
+                        opcion = vis.menu(turno, turnoJugador);
+                    }
+                    else{
+                        opcion = vis.menu(turno, turnoEnemigo);
+                    }
                     if (opcion == 1){
-                        if (turno.equalsIgnoreCase("jugador")){
-                            turno = sistem.atacarEnemigo(vis.enemigoAAtacar(sistem.getEnemigos()), turno);
+                        if (turno.equalsIgnoreCase("jugadores")){
+                            String enemigoAAtacar = vis.enemigoAAtacar(sistem.getCombatientes());
+                            sistem.atacarEnemigo(enemigoAAtacar, turnoJugador);
+                            String[] datos = sistem.administradorTurnos(turno, turnoJugador, turnoEnemigo);
+                            turnoJugador = Integer.parseInt(datos[0]);
+                            turnoEnemigo = Integer.parseInt(datos[1]);                     
+                            turno = datos[2];
                         }
-                        else if (turno.equalsIgnoreCase("enemigo")){
-                            turno = sistem.atacarJugador(turno);
+                        else if (turno.equalsIgnoreCase("enemigos")){
+                            String jugadorAAtacar = vis.jugadorAAtacar(sistem.getCombatientes());
+                            sistem.atacarJugador(jugadorAAtacar, turnoEnemigo);
+                            String[] datos = sistem.administradorTurnos(turno, turnoJugador, turnoEnemigo);
+                            turnoJugador = Integer.parseInt(datos[0]);
+                            turnoEnemigo = Integer.parseInt(datos[1]);                       
+                            turno = datos[2];
                         }
                     }
                     else if (opcion == 2){
-                        turno = sistem.pasarTurno(turno);
+                        String[] datos = sistem.administradorTurnos(turno, turnoJugador, turnoEnemigo);
+                        turnoJugador = Integer.parseInt(datos[0]);
+                        turnoEnemigo = Integer.parseInt(datos[1]);                     
+                        turno = datos[2];
                     }
                     else if (opcion == 3){
-                        turno = sistem.usarHabilidad(turno);
+                        if (turno.equalsIgnoreCase("jugadores")){
+                            sistem.usarHabilidadJugador(turnoJugador);
+                            String[] datos = sistem.administradorTurnos(turno, turnoJugador, turnoEnemigo);
+                            turnoJugador = Integer.parseInt(datos[0]);
+                            turnoEnemigo = Integer.parseInt(datos[1]);                     
+                            turno = datos[2];
+                        }
+                        else if (turno.equalsIgnoreCase("enemigos")){
+                            String jugadorAAfectar = vis.jugadorDondeSeVaAUsarHabilidad(sistem.getCombatientes());
+                            sistem.usarHabilidadEnemigo(jugadorAAfectar, turnoEnemigo);
+                            String[] datos = sistem.administradorTurnos(turno, turnoJugador, turnoEnemigo);
+                            turnoJugador = Integer.parseInt(datos[0]);
+                            turnoEnemigo = Integer.parseInt(datos[1]);                       
+                            turno = datos[2];
+                        }
                     }
                     else if (opcion == 4){
                         System.exit(0);//Se sale del programa
@@ -58,9 +94,6 @@ public class Controlador {
                 }
             
             }
-        } catch (Exception e) {
-            System.out.println("Sucedio un errror");
-        }
         
     }
 }

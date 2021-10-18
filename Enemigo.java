@@ -3,26 +3,13 @@
  */
 
 public class Enemigo extends Combatiente{
-    private String tipo;
     private Habilidades habilidad;
 
-    Enemigo(String nombre, int tipo){
+    Enemigo(String nombre){
         super(nombre);
-
-        if (tipo == 1){
-            this.tipo = "Venenoso";
-            habilidad = new Habilidades(this.tipo);
-        }
-        else if (tipo == 2){
-            this.tipo = "Fuego";
-        }
-    }
-    /**
-     * obtenemos el valor de tipo
-     * @return
-     */
-    public String getTipo() {
-        return tipo;
+        setPuntosVida(150);
+        setPoderAtaque(30);
+        habilidad = new Rayo(70);
     }
 
     /**
@@ -36,10 +23,9 @@ public class Enemigo extends Combatiente{
     /**
      * Utilizamos la habilidad especial
      */
-    public void habilidadEspecial(){
-        Enemigo enemy = habilidad.usar(this);
-        this.setPoderAtaque(enemy.getPoderAtaque());
-        this.setPuntosVida(enemy.getPuntosVida());
+    public Combatiente habilidadEspecial(Combatiente combatiente){
+        combatiente = habilidad.usar(combatiente);
+        return combatiente;
     }
 
     /**
@@ -47,7 +33,7 @@ public class Enemigo extends Combatiente{
      * @param player
      * @return
      */
-    public Jugador atacar(Jugador player){
+    public Combatiente atacar(Combatiente player){
         int cantidadVida = player.getPuntosVida();
         cantidadVida -= super.getPoderAtaque();
         player.setPuntosVida(cantidadVida);

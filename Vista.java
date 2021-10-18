@@ -12,22 +12,12 @@ public class Vista {
      * Este metodo inicia el programa y define el jugador
      * @return
      */
-    public String[] inicio(){
-        String[] datos = new String[2];
+    public int inicio(){
         System.out.println("Bienvenidos combatientes");
-        System.out.println("¿Cual es el nombre del jugador?");
-        String nombre = scan.nextLine();
-        datos[0] = nombre;
-        boolean right = false;
-        while (right == false){
-            System.out.println("Elija un rol (1. Guerrero, 2 Explorador)");
-            String role = scan.nextLine();
-            if (role.equalsIgnoreCase("guerrero") || role.equalsIgnoreCase("explorador")){
-                right = true;
-                datos[1] = role;
-            }
-        } 
-        return datos;
+        System.out.println("Ingrese numero de jugadores");
+        String numString = scan.nextLine();
+        int num = Integer.parseInt(numString);
+        return num;
     }
 
     /**
@@ -35,8 +25,8 @@ public class Vista {
      * @param turno
      * @return numero de opcion que eligio el usuario
      */
-    public int menu(String turno){
-        System.out.println("Turno de " + turno);
+    public int menu(String turno, int num){
+        System.out.println("Turno de " + turno + ", con el numero: "+ num);
         System.out.println("Elija una opción:");
 		System.out.println("1. Atacar");//Le damos todas las opciones disponibles
 		System.out.println("2. Pasar turno");
@@ -56,34 +46,82 @@ public class Vista {
         return option;//regresamos el valor convertido
     }
 
+    public String crearJugadores(){
+        String role = "";
+        boolean right = false;
+        while (right == false){
+            System.out.println("Elija un rol (1. Guerrero, 2. Explorador, 3. Cazador)");
+            role = scan.nextLine();
+            if (role.equalsIgnoreCase("guerrero") || role.equalsIgnoreCase("explorador") || role.equalsIgnoreCase("Cazador")){
+                right = true;
+            }
+        } 
+        return role;
+    }
+
     /**
      * metodo que sirve para verificar que enemigo se va a atacar
      * @param enemigos
      * @return
      */
-    public String enemigoAAtacar(ArrayList<Enemigo> enemigos){
+    public String enemigoAAtacar(ArrayList<Combatiente> combatientes){
         String enemigoAAtacar = "";
-        if (enemigos.size() == 1){
-            enemigoAAtacar = "Enemigo1";
-        }
-        else{
-            boolean paso = false;
-            while (paso == false){
-                System.out.println("A cual enemigo desea atacar");
-                enemigoAAtacar = scan.nextLine();
-                for (int i = 0; i < enemigos.size(); i++){
-                    Enemigo enemy = enemigos.get(i);
-                    if (enemigoAAtacar.equalsIgnoreCase(enemy.getNombre())){
-                        paso = true;
-                        break;
-                    }
+        boolean paso = false;
+        while (paso == false){
+            System.out.println("A cual enemigo desea atacar");
+            enemigoAAtacar = scan.nextLine();
+            for (int i = 0; i < combatientes.size(); i++){
+                Combatiente combatiente = combatientes.get(i);
+                if (enemigoAAtacar.equalsIgnoreCase(combatiente.getNombre())){
+                    paso = true;
+                    break;
                 }
-                if(paso == false){
-                    System.out.println("Elija el nombre de un enemigo participante");
-                }
+            }
+            if(paso == false){
+                System.out.println("Elija el nombre de un enemigo participante");
             }
         }
         return enemigoAAtacar;
+    }
+
+    public String jugadorAAtacar(ArrayList<Combatiente> combatientes){
+        String jugadorAAtacar = "";
+        boolean paso = false;
+        while (paso == false){
+            System.out.println("A cual jugador desea atacar");
+            jugadorAAtacar = scan.nextLine();
+            for (int i = 0; i < combatientes.size(); i++){
+                Combatiente combatiente = combatientes.get(i);
+                if (jugadorAAtacar.equalsIgnoreCase(combatiente.getNombre())){
+                    paso = true;
+                    break;
+                }
+            }
+            if(paso == false){
+                System.out.println("Elija el nombre de un jugador participante");
+            }
+        }
+        return jugadorAAtacar;
+    }
+
+    public String jugadorDondeSeVaAUsarHabilidad(ArrayList<Combatiente> combatientes){
+        String jugadorAfectado = "";
+        boolean paso = false;
+        while (paso == false){
+            System.out.println("En cual jugador desea usar su Habilidad?");
+            jugadorAfectado = scan.nextLine();
+            for (int i = 0; i < combatientes.size(); i++){
+                Combatiente combatiente = combatientes.get(i);
+                if (jugadorAfectado.equalsIgnoreCase(combatiente.getNombre())){
+                    paso = true;
+                    break;
+                }
+            }
+            if(paso == false){
+                System.out.println("Elija el nombre de un jugador participante");
+            }
+        }
+        return jugadorAfectado;
     }
 
     /**
@@ -91,23 +129,27 @@ public class Vista {
      * @param enemigos
      * @param player
      */
-    public void desplegarEstadisticas(ArrayList<Enemigo> enemigos, Jugador player){
-        for (int i = 0; i < enemigos.size(); i++){
-            Enemigo enemy = enemigos.get(i);
-            System.out.println("---------------------------------");
-            System.out.println("Nombre del enemigo: " + enemy.getNombre());
-            System.out.println("Vida: " + enemy.getPuntosVida());
-            System.out.println("Poder: " + enemy.getPoderAtaque());//Vamos extrayendo los datos de la base de datos y los vamos imprimiendo conforme los vamos extrayendo
-            System.out.println("---------------------------------");
+    public void desplegarEstadisticas(ArrayList<Combatiente> combatientes){
+        for (int i = 0; i < combatientes.size(); i++){
+            Combatiente combatiente = combatientes.get(i);
+            if (combatiente.getNombre().equalsIgnoreCase("enemigo1") || combatiente.getNombre().equalsIgnoreCase("enemigo2") || combatiente.getNombre().equalsIgnoreCase("enemigo3") || combatiente.getNombre().equalsIgnoreCase("enemigo4") || combatiente.getNombre().equalsIgnoreCase("enemigo5")){
+                Enemigo enemy = (Enemigo) combatiente;
+                System.out.println("---------------------------------");
+                System.out.println("Nombre del enemigo: " + enemy.getNombre());
+                System.out.println("Vida: " + enemy.getPuntosVida());
+                System.out.println("Poder: " + enemy.getPoderAtaque());//Vamos extrayendo los datos de la base de datos y los vamos imprimiendo conforme los vamos extrayendo
+                System.out.println("---------------------------------");
+            }
+            else if (combatiente.getNombre().equalsIgnoreCase("jugador1") || combatiente.getNombre().equalsIgnoreCase("jugador2") || combatiente.getNombre().equalsIgnoreCase("jugador3")){
+                Jugador player = (Jugador) combatiente;
+                System.out.println("---------------------------------");
+                System.out.println("Nombre del jugador: " + player.getNombre());
+                System.out.println("Vida: " + player.getPuntosVida());
+                System.out.println("Poder: " + player.getPoderAtaque());//Vamos extrayendo los datos de la base de datos y los vamos imprimiendo conforme los vamos extrayendo
+                System.out.println("Items: " + player.getItem().getCantidad());
+                System.out.println("---------------------------------");
+            }
         }
-
-        System.out.println("---------------------------------");
-        System.out.println("Nombre del jugador: " + player.getNombre());
-        System.out.println("Vida: " + player.getPuntosVida());
-        System.out.println("Poder: " + player.getPoderAtaque());//Vamos extrayendo los datos de la base de datos y los vamos imprimiendo conforme los vamos extrayendo
-        System.out.println("Items: " + player.getItem().getCantidad());
-        System.out.println("Clase: " + player.getRol());
-        System.out.println("---------------------------------");
     }
 
     /**
@@ -115,12 +157,11 @@ public class Vista {
      * @param enemigos
      * @param player
      */
-    public void iniciar(ArrayList<Enemigo> enemigos, Jugador player){
-        for (int i = 0; i < enemigos.size(); i++){
-            Enemigo enemigo = enemigos.get(i);
-            System.out.println("Enemigo " + (i+1) + " dice: " + enemigo);
+    public void iniciar(ArrayList<Combatiente> combatientes){
+        for (int i = 0; i < combatientes.size(); i++){
+            Combatiente combatiente = combatientes.get(i);
+            System.out.println(combatiente.toString());
         }
-        System.out.println("Jugador dice: " + player);
     }
 
     /**
